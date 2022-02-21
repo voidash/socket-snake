@@ -9,15 +9,18 @@ const socket = io('http://localhost:3000')
 socket.on('init', handleInit);
 socket.on('gameState', handleGame);
 socket.on('gameOver', handleGameOver);
+socket.on('gameCode', handleGameCode);
+socket.on('unknownGame', handleUnknownGame);
 
 const initialScreen = document.getElementById('initialScreen');
 const gameScreen = document.getElementById('gameScreen');
 const newGameBtn = document.getElementById('newGameButton');
-const joinGameBtn = document.getElementById('joinGameBtn');
+const joinGameBtn = document.getElementById('joinGameButton');
 const gameCodeInput = document.getElementById('gameCodeInput');
+const gameCodeDisplay = document.getElementById('gameCodeDisplay');
 
-newGameBtn.addEventListener('click', newGame);
 joinGameBtn.addEventListener('click', joinGame);
+newGameBtn.addEventListener('click', newGame);
 
 
 function newGame() {
@@ -35,29 +38,8 @@ function joinGame() {
 
 let canvas, ctx;
 let playerNumber;
+let gameActive = false;
 
-const gameState = {
-	player: {
-		pos: {
-			x: 3,
-			y: 10,
-		},
-		vel: {
-			x: 1,
-			y: 0,
-		},
-		snake: [
-			{x:1, y:10},
-			{x:2, y:10},
-			{x:3, y:10}
-		]
-	},
-	food: {
-		x: 7,
-		y:7,
-	},
-	gridSize: 20
-};
 
 function init() {
 	initialScreen.style.display = 'none';
@@ -71,11 +53,11 @@ function init() {
 
 
 	document.addEventListener('keydown', keydown);
+	gameActive = true;
 }
 
 function keydown(e) {
 	socket.emit('keydown', e.keyCode);
-	console.log(e.keyCode);
 }
 
 
@@ -88,9 +70,10 @@ function paintGame(state) {
 	const size = canvas.width / gridSize;
 
 	ctx.fillStyle = FOOD_COLOR;
-	ctx.fillRect(food.x * size,food.y*size , size, size);
+	ctx.fillRect(food.x * size, food.y*size , size, size);
 
-	paintPlayer(state.player, size, SNAKE_COLOR);
+	paintPlayer(state.players[0], size, SNAKE_COLOR);
+	paintPlayer(state.players[1], size, 'blue');
 }
 
 function paintPlayer(playerState, size, color) {
@@ -102,18 +85,44 @@ function paintPlayer(playerState, size, color) {
 	}
 }
 
-paintGame(gameState);
 
 function handleInit(number){
 	playerNumber = number;
 }
 
 function handleGame(gameState) {
+	if(!gameActive) {
+		return;
+	}
+
 	gameState = JSON.parse(gameState);
 	requestAnimationFrame(() => paintGame(gameState));
 }
 
 function handleGameOver(_) {
 	alert("you lose");
+	gameActive = false;
 }
 
+function handleGameCode(gameCode) {
+	gameCodeDisplay.innerText = gameCode;
+}
+
+function handleUnknownGame() {
+	reset();
+	alert('Unknown game code');
+}
+
+function tooManyPlayers() {
+	reset();
+	alert("this game is already in progress");
+}
+
+function reset() {
+	playerNumber = null;
+	gameCodeInput.value = "";
+	gameCodeDisplay.innerText = "";
+	initialScreen.style.display = "block";
+	gameScreen.style.display = "none";
+	
+}

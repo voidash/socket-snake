@@ -1,7 +1,3 @@
-module.exports = {
-	makeid,
-}
-
 
 function makeId(length) {
 	let result = '';
@@ -14,3 +10,8 @@ function makeId(length) {
 
 	return result;
 }
+module.exports = {
+	makeId
+}
+
+
