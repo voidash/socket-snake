@@ -1,5 +1,10 @@
 const { GRID_SIZE } = require('./constants');
 
+function initGame() {
+	const state = createGameState();
+	randomFood(state);
+	return state;
+}
 function createGameState() {
 	return {
 		player: {
@@ -41,7 +46,7 @@ function gameLoop(state) {
 		playerOne.snake.push({...playerOne.pos});
 		playerOne.pos.x += playerOne.vel.x;
 		playerOne.pos.y += playerOne.vel.y;
-		randomFood();
+		randomFood(state);
 	}
 
 	if (playerOne.vel.x || playerOne.vel.y) {
@@ -72,4 +77,23 @@ function randomFood(state) {
 	state.food = food;
 }
 
-module.exports =  { createGameState,gameLoop }
+function getUpdatedVelocity(keyCode) {
+	switch(keyCode) {
+		case 37: { //left
+			return {x: -1 , y: 0}
+		}
+		case 38: { //down
+			return {x: 0 , y: -1}
+		}
+		case 39: { //right
+			return {x: 1 , y: 0}
+		}
+		case 40: { //up
+			return {x: 0 , y: 1}
+		}
+
+
+	}
+}
+
+module.exports =  { createGameState,gameLoop,getUpdatedVelocity}

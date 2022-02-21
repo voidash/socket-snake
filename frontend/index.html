@@ -11,9 +11,27 @@
 	height:800px;
 	border: 1px solid black;
 }
+
+#newGameButton {
+	padding:10px;
+}
+
+#initialScreen {
+	display: block;
+}
 </style>
 <body>
+	<div id="initialScreen">
+		<div class="body">
+			<h1>Multiplayer Snake</h1>
+			<button type="submit" id="newGameButton">Create new game</button>
+			<div>OR</div>
+			<input type="text" name="gameCodeInput" placeholder="Enter game code"/>
+			<button id="joinGameBtn">Join Game</button>
+		</div>
+	</div>
 	<div id="gameScreen">
+		<h1>Your gamecode is : <span id = "gameCodeDisplay"> </span></h1>
 		<canvas id="canvas"></canvas>
 	</div>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>

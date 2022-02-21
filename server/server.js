@@ -1,5 +1,5 @@
 const httpServer = require('http').createServer();
-const {createGameState, gameLoop} = require('./game');
+const {createGameState, gameLoop,getUpdatedVelocity} = require('./game');
 const {FRAME_RATE} = require('./constants');
 
 const io = require('socket.io')(httpServer, 
@@ -10,13 +10,30 @@ const io = require('socket.io')(httpServer,
 		}
 	});
 
+let keyCode;
+const state =  {};
+const clientRooms = {};
+
 io.on('connection', client => {
 	const state = createGameState();
 	client.on('keydown', handleKeydown)	;
+	client.on('newGame', handleNewGame)	;
+	client.on('newGame', handleNewGame)	;
 
+	function handleNewGame() {
+		let roomName = makeId(5);
+		clientRooms[client.id] = roomName;
+		client.emit('gameCode', roomName);
+
+		state[roomName] = initGame();
+		client.join(roomName);
+		client.number = 1;
+		client.emit('init', 1);
+
+	}
 	function handleKeydown(KeyCode) {
 		try {
-			let keyCode = parseInt(keyCode);
+		keyCode = parseInt(KeyCode);
 		}catch(e) {
 			console.error(e);
 			return;
@@ -42,6 +59,9 @@ function startGameInterval(client, state) {
 			clearInterval(intervalId);
 		}
 	}, 1000/FRAME_RATE);
+
 }
 
+
 io.listen(3000);
+
