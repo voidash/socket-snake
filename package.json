@@ -1,0 +1,20 @@
+{
+  "name": "multiplayer-snake",
+  "version": "1.0.0",
+  "description": "[video](https://www.youtube.com/watch?v=ppcBIHv_ZPs)",
+  "main": "index.js",
+  "scripts": {
+    "start": "cd server; npm run start & disown; cd ../frontend; npm run start & disown;"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/voidash/socket-snake.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/voidash/socket-snake/issues"
+  },
+  "homepage": "https://github.com/voidash/socket-snake#readme"
+}
