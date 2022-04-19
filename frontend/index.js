@@ -99,8 +99,13 @@ function handleGame(gameState) {
 	requestAnimationFrame(() => paintGame(gameState));
 }
 
-function handleGameOver(_) {
-	alert("you lose");
+function handleGameOver(gameState) {
+	
+	if(JSON.parse(gameState).winner == playerNumber){
+		alert('You Won');
+	}else{
+		alert("you lose");
+	}
 	gameActive = false;
 }
 
