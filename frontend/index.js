@@ -3,7 +3,7 @@ const SNAKE_COLOR = '#fff';
 const FOOD_COLOR = 'red';
 
 
-const socket = io('http://localhost:3000')
+const socket = io('192.168.0.33:3000')
 
 
 socket.on('init', handleInit);
@@ -54,10 +54,35 @@ function init() {
 
 	document.addEventListener('keydown', keydown);
 	gameActive = true;
+
+	mobileButtons();
 }
 
 function keydown(e) {
 	socket.emit('keydown', e.keyCode);
+}
+
+function mobileButtons() {
+	let left = document.getElementById('left');
+	let right = document.getElementById('right');
+	let up = document.getElementById('up');
+	let down = document.getElementById('down');
+
+	left.addEventListener('click', () => {
+		keydown({keyCode: 37 });
+	});
+
+	right.addEventListener('click', () => {
+		keydown({keyCode: 39 });
+	});
+
+	up.addEventListener('click', () => {
+		keydown({keyCode: 38 });
+	});
+
+	down.addEventListener('click', () => {
+		keydown({keyCode: 40 });
+	});
 }
 
 
@@ -129,5 +154,4 @@ function reset() {
 	gameCodeDisplay.innerText = "";
 	initialScreen.style.display = "block";
 	gameScreen.style.display = "none";
-	
 }

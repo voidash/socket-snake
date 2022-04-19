@@ -19,6 +19,10 @@
 #initialScreen {
 	display: block;
 }
+button {
+	padding: 20px;
+	font-size : 20px;
+}
 </style>
 <body>
 	<div id="initialScreen">
@@ -33,6 +37,12 @@
 	<div id="gameScreen">
 		<h1>Your gamecode is : <span id = "gameCodeDisplay"> </span></h1>
 		<canvas id="canvas"></canvas>
+		<div>
+			<button id="left">left</button>
+			<button id="up">up</button>
+			<button id="down">down</button>
+			<button id="right">right</button>
+		</div>
 	</div>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.min.js"></script>
 	<script src="./index.js"></script>
